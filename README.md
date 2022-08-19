@@ -98,7 +98,7 @@ Outputs:
 - Table of Contents
 - [Initialization](#installation)
 - [Setting up translations](#setting-up-translations)
-- [Currencies & Numbers](#currencies--numbers)
+- [Time, Date, Currencies & Numbers](#time-date-currencies--numbers)
 - [Time & Date Formats](#time--date-formats)
 - [Usage with "Template" _**recommended**_](#using-i18ntranslate-with-version-2-of-the-neoan3-appstemplate-engine)
 
@@ -148,7 +148,7 @@ is intended. While formatting reacts to the differences of country localisation,
 Example en-US vs. en-EN: the date formatting will react to these differences,
 but translations like 'color' <=> 'colour' are not supported.
 
-## Currencies & Numbers
+## Time, Date, Currencies & Numbers
 
 This package includes a formatter for currencies, numbers and dates. If you want to use its functionality
 outside of an HTML template, you can initialize it yourself.

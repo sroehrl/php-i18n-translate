@@ -58,6 +58,10 @@ main.html
 <!-- If it's not a timestamp, things become smart -->
 <p i18n-date="d.m">next monday</p>
 
+<div>
+    <p>Event starts @ <strong i18n-time>12:30</strong> (That's <span i18n-time-local="hh:mm a">12:30</span> your time)</p>
+</div>
+
 <!-- let's translate again, using the t-tag -->
 <p><t>goose</t></p>
 <p><t>goose.plural</t></p>
@@ -78,6 +82,10 @@ Outputs:
 <!-- If it's not a timestamp, things become smart -->
 <p>22.06</p>
 
+<div>
+    <p>Event starts @ <strong>12:30 EDT</strong> (That's <span>9:30 am</span> your time)</p>
+</div>
+
 <!-- let's translate again, using the t-tag -->
 <p><t>Gans</t></p>
 <p><t>Gänse</t></p>
@@ -90,16 +98,25 @@ Outputs:
 - Table of Contents
 - [Initialization](#installation)
 - [Setting up translations](#setting-up-translations)
+- [Currencies & Numbers](#currencies--numbers)
 - [Time & Date Formats](#time--date-formats)
 - [Usage with "Template" _**recommended**_](#using-i18ntranslate-with-version-2-of-the-neoan3-appstemplate-engine)
 
 ## Initialization
 
-`$t = new I18nTranslate(string $locale = null)`
+`$t = new I18nTranslate(string $locale = null, string $clientTimezone = null)`
 
 You can initialize either with or without a ISO-locale (e.g. 'en-US').
 If no value is provided, the class first tries to set the locale by the ACCEPT_LANGUAGE header and if that fails
 defaults to "en-US".
+If you don't pass a $clientTimeZone (e.g. 'Europe/Paris'), then a guess is made based on the locale. This can potentially lead to 
+time offsets in countries with multiple timezones.
+
+> TIPS:
+> 
+> Timezones: There are several "timezone-guessing" mechanisms around. Using JavaScript is usually the most reliable way.
+> 
+> Settings: When dealing with internationalization, setting your server & database to UTC is a battle-tested approach.
 
 ## Setting up translations
 
@@ -131,21 +148,66 @@ is intended. While formatting reacts to the differences of country localisation,
 Example en-US vs. en-EN: the date formatting will react to these differences,
 but translations like 'color' <=> 'colour' are not supported.
 
+## Currencies & Numbers
+
+This package includes a formatter for currencies, numbers and dates. If you want to use its functionality
+outside of an HTML template, you can initialize it yourself.
+
+The following converters are at your disposal:
+- date (accepts optional [format](#time--date-formats))
+- date-local (accepts optional [format](#time--date-formats))
+- time (accepts optional [format](#time--date-formats))
+- time-local (accepts optional [format](#time--date-formats))
+- currency (accepts optional, but recommended, ISO currency code like "USD")
+- number
+
+```php 
+$locale = 'en-US';
+$clientTimeZone = 'America/New_York'; // or null to let the class make an educated guess
+$formatter = new I18nTranslate\Formatter(string $locale, $clientTimeZone);
+
+$convertToClientTime = $formatter->format('time-local');
+
+$serverTime = time();
+$clientTime = $convertToClientTime($serverTime); // e.g. 09:30 AM EDT
+$clientTime = $convertToClientTime($serverTime, 'h:mm'); // e.g. 9:30
+```
+
+In most scenarios the templating attributes will be sufficient to handle your needs:
+
+```html
+<section i18n-number>12.34</section>
+<!-- with currencies we recommend setting a currency as it otherwise defaults to the user's locale... -->
+<section i18n-currency="CAD">12.34</section>
+<!-- ... But the following attributes accept formatting, but don't need it -->
+<section i18n-date="EEEE">tomorrow</section>
+<section i18n-date-local>tomorrow</section>
+<section i18n-time>9:30</section>
+<section i18n-time-local>9:30</section>
+```
+
+For a better understanding of how to pass values to your HTML, read [here](#using-i18ntranslate-with-version-2-of-the-neoan3-appstemplate-engine)
+
 ## Time & Date formats
 
-Out of the box, the localization decides between the imperial and metric system.
-Given the wide range of date formats used around the globe, it is recommended to target important audiences individually.
+This package uses the Intl-extension for PHP but has a fallback mechanisms. If you do not have Intl installed, localized transformation does not work.
 
 Date & Time inputs are interpreted either as UNIX timestamps or strings supported by PHP's [strtotime](https://www.php.net/manual/en/function.strtotime) function.
 
-Date & Time outputs accept strings in the format of [DateTimeInterface::format](https://www.php.net/manual/en/datetime.format.php)
+Date & Time formats accepts strings in the format of ISO8601 date format **So not PHP's date notation**
 
-_Defaults:_
+I kindly ask contributors to find an appropriate list. Until then, this dated Zend list is the best I could find:
+[formats](https://framework.zend.com/manual/1.12/en/zend.date.constants.html#zend.date.constants.selfdefinedformats)
+
+_Default fallback formats:_
 
 | | Metric | Imperial |
 | --- | --- | --- |
-| date | d.m.Y | m/d/Y |
-| time | H:i | h:i A |
+| date | dd.MM.Y | MM/dd/Y |
+| time | HH:mm | hh:mm A z |
+
+Numbers and currencies work with or without the Intl-extension, but might not conform to the ISO 8601 standard without the Intl-extension.
+
 
 The examples at [Quick Start](#quick-start) should help.
 
@@ -172,7 +234,7 @@ $t->setTranslations('de', [
 
 $regularRenderData = [
     'tomorrow' => time() + 60*60*24,
-    'format' => 'd-m-y',
+    'format' => 'dd-MM-Y',
     'iterateMe' => [0,1,2],
     'fromCode' => $t->('man')
 ];

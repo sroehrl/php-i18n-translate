@@ -67,5 +67,7 @@ class FormatterTest extends TestCase
         $this->assertSame(date('d.m.Y'), $date(time()));
         $time = $f->format('time');
         $this->assertSame(date('H:i'), $time(time()));
+        $time = $f->format('time-local');
+        $this->assertSame(date('H:i'), $time(time()));
     }
 }

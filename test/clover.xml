@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1660940552">
-  <project timestamp="1660940552">
+<coverage generated="1660941985">
+  <project timestamp="1660941985">
     <file name="C:\xampp\htdocs\php-i18n-translate\src\Formatter.php">
       <class name="I18nTranslate\Formatter" namespace="global">
-        <metrics complexity="23" methods="5" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="56" coveredstatements="55" elements="61" coveredelements="59"/>
+        <metrics complexity="26" methods="7" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="57" coveredstatements="56" elements="64" coveredelements="62"/>
       </class>
-      <line num="19" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="12"/>
-      <line num="21" type="stmt" count="12"/>
-      <line num="22" type="stmt" count="12"/>
-      <line num="23" type="stmt" count="12"/>
-      <line num="24" type="stmt" count="12"/>
-      <line num="25" type="stmt" count="12"/>
-      <line num="28" type="method" name="format" visibility="public" complexity="17" crap="17" count="8"/>
-      <line num="30" type="stmt" count="8"/>
-      <line num="31" type="stmt" count="7"/>
-      <line num="32" type="stmt" count="7"/>
-      <line num="33" type="stmt" count="1"/>
-      <line num="34" type="stmt" count="1"/>
-      <line num="35" type="stmt" count="6"/>
-      <line num="36" type="stmt" count="1"/>
-      <line num="37" type="stmt" count="1"/>
-      <line num="38" type="stmt" count="1"/>
-      <line num="39" type="stmt" count="1"/>
-      <line num="41" type="stmt" count="5"/>
+      <line num="19" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="15"/>
+      <line num="21" type="stmt" count="15"/>
+      <line num="22" type="stmt" count="15"/>
+      <line num="23" type="stmt" count="15"/>
+      <line num="24" type="stmt" count="15"/>
+      <line num="25" type="stmt" count="15"/>
+      <line num="27" type="method" name="formatWithIntl" visibility="private" complexity="9" crap="9" count="10"/>
+      <line num="29" type="stmt" count="10"/>
+      <line num="30" type="stmt" count="10"/>
+      <line num="31" type="stmt" count="2"/>
+      <line num="32" type="stmt" count="2"/>
+      <line num="33" type="stmt" count="8"/>
+      <line num="34" type="stmt" count="2"/>
+      <line num="35" type="stmt" count="2"/>
+      <line num="36" type="stmt" count="2"/>
+      <line num="37" type="stmt" count="2"/>
+      <line num="39" type="stmt" count="6"/>
+      <line num="40" type="stmt" count="5"/>
+      <line num="41" type="stmt" count="3"/>
       <line num="42" type="stmt" count="3"/>
-      <line num="43" type="stmt" count="3"/>
       <line num="44" type="stmt" count="3"/>
-      <line num="46" type="stmt" count="3"/>
+      <line num="45" type="stmt" count="3"/>
       <line num="47" type="stmt" count="3"/>
-      <line num="49" type="stmt" count="2"/>
-      <line num="50" type="stmt" count="1"/>
-      <line num="51" type="stmt" count="2"/>
-      <line num="52" type="stmt" count="2"/>
-      <line num="54" type="stmt" count="2"/>
-      <line num="55" type="stmt" count="2"/>
+      <line num="48" type="stmt" count="2"/>
+      <line num="49" type="stmt" count="3"/>
+      <line num="50" type="stmt" count="3"/>
+      <line num="52" type="stmt" count="3"/>
+      <line num="53" type="stmt" count="3"/>
+      <line num="59" type="method" name="formatFallback" visibility="private" complexity="9" crap="9.02" count="1"/>
       <line num="61" type="stmt" count="1"/>
       <line num="62" type="stmt" count="1"/>
       <line num="63" type="stmt" count="1"/>
@@ -45,82 +45,85 @@
       <line num="69" type="stmt" count="1"/>
       <line num="70" type="stmt" count="1"/>
       <line num="71" type="stmt" count="1"/>
-      <line num="72" type="stmt" count="0"/>
+      <line num="72" type="stmt" count="1"/>
       <line num="73" type="stmt" count="1"/>
       <line num="74" type="stmt" count="1"/>
-      <line num="80" type="method" name="initFormatter" visibility="private" complexity="2" crap="2" count="5"/>
-      <line num="82" type="stmt" count="5"/>
-      <line num="83" type="stmt" count="3"/>
-      <line num="85" type="stmt" count="5"/>
-      <line num="87" type="method" name="getClientTimezone" visibility="private" complexity="2" crap="2" count="2"/>
-      <line num="89" type="stmt" count="2"/>
-      <line num="90" type="stmt" count="1"/>
-      <line num="92" type="stmt" count="1"/>
-      <line num="93" type="stmt" count="1"/>
-      <line num="95" type="method" name="getDefaults" visibility="private" complexity="1" crap="1" count="6"/>
-      <line num="97" type="stmt" count="6"/>
-      <line num="98" type="stmt" count="6"/>
-      <line num="99" type="stmt" count="6"/>
-      <line num="100" type="stmt" count="5"/>
-      <line num="102" type="stmt" count="6"/>
-      <line num="103" type="stmt" count="6"/>
-      <line num="104" type="stmt" count="5"/>
+      <line num="76" type="stmt" count="0"/>
+      <line num="82" type="method" name="format" visibility="public" complexity="2" crap="2" count="11"/>
+      <line num="84" type="stmt" count="11"/>
+      <line num="86" type="method" name="initFormatter" visibility="private" complexity="2" crap="2" count="6"/>
+      <line num="88" type="stmt" count="6"/>
+      <line num="89" type="stmt" count="4"/>
+      <line num="91" type="stmt" count="6"/>
+      <line num="93" type="method" name="getClientTimezone" visibility="private" complexity="2" crap="2" count="4"/>
+      <line num="95" type="stmt" count="4"/>
+      <line num="96" type="stmt" count="1"/>
+      <line num="98" type="stmt" count="3"/>
+      <line num="99" type="stmt" count="3"/>
+      <line num="101" type="method" name="getDefaults" visibility="private" complexity="1" crap="1" count="7"/>
+      <line num="103" type="stmt" count="7"/>
+      <line num="104" type="stmt" count="7"/>
+      <line num="105" type="stmt" count="7"/>
       <line num="106" type="stmt" count="6"/>
-      <metrics loc="108" ncloc="108" classes="1" methods="5" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="56" coveredstatements="55" elements="61" coveredelements="59"/>
+      <line num="108" type="stmt" count="7"/>
+      <line num="109" type="stmt" count="7"/>
+      <line num="110" type="stmt" count="6"/>
+      <line num="112" type="stmt" count="7"/>
+      <metrics loc="114" ncloc="114" classes="1" methods="7" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="57" coveredstatements="56" elements="64" coveredelements="62"/>
     </file>
     <file name="C:\xampp\htdocs\php-i18n-translate\src\Translate.php">
       <class name="I18nTranslate\Translate" namespace="global">
-        <metrics complexity="20" methods="9" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="50" elements="68" coveredelements="58"/>
+        <metrics complexity="20" methods="9" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="59" elements="68" coveredelements="68"/>
       </class>
-      <line num="17" type="method" name="__construct" visibility="public" complexity="3" crap="3" count="5"/>
-      <line num="19" type="stmt" count="5"/>
-      <line num="20" type="stmt" count="4"/>
-      <line num="23" type="stmt" count="5"/>
-      <line num="24" type="stmt" count="5"/>
-      <line num="25" type="stmt" count="5"/>
-      <line num="26" type="stmt" count="5"/>
-      <line num="27" type="stmt" count="5"/>
-      <line num="28" type="stmt" count="5"/>
+      <line num="17" type="method" name="__construct" visibility="public" complexity="3" crap="3" count="8"/>
+      <line num="19" type="stmt" count="8"/>
+      <line num="20" type="stmt" count="7"/>
+      <line num="23" type="stmt" count="8"/>
+      <line num="24" type="stmt" count="8"/>
+      <line num="25" type="stmt" count="8"/>
+      <line num="26" type="stmt" count="8"/>
+      <line num="27" type="stmt" count="8"/>
+      <line num="28" type="stmt" count="8"/>
       <line num="30" type="method" name="setDebug" visibility="public" complexity="1" crap="1" count="1"/>
       <line num="32" type="stmt" count="1"/>
-      <line num="34" type="method" name="applyDateTimeFormat" visibility="private" complexity="2" crap="2" count="1"/>
-      <line num="36" type="stmt" count="1"/>
-      <line num="38" type="stmt" count="1"/>
-      <line num="39" type="stmt" count="1"/>
-      <line num="40" type="stmt" count="1"/>
+      <line num="34" type="method" name="applyDateTimeFormat" visibility="private" complexity="2" crap="2" count="3"/>
+      <line num="36" type="stmt" count="3"/>
+      <line num="38" type="stmt" count="3"/>
+      <line num="39" type="stmt" count="3"/>
+      <line num="40" type="stmt" count="3"/>
       <line num="41" type="stmt" count="1"/>
       <line num="42" type="stmt" count="1"/>
-      <line num="45" type="stmt" count="1"/>
+      <line num="45" type="stmt" count="3"/>
       <line num="46" type="stmt" count="1"/>
-      <line num="48" type="stmt" count="1"/>
-      <line num="50" type="stmt" count="1"/>
-      <line num="54" type="method" name="attributes" visibility="private" complexity="2" crap="2.71" count="5"/>
-      <line num="56" type="stmt" count="5"/>
-      <line num="57" type="stmt" count="0"/>
-      <line num="58" type="stmt" count="0"/>
-      <line num="59" type="stmt" count="0"/>
-      <line num="60" type="stmt" count="0"/>
-      <line num="61" type="stmt" count="0"/>
-      <line num="63" type="stmt" count="5"/>
+      <line num="48" type="stmt" count="3"/>
+      <line num="50" type="stmt" count="3"/>
+      <line num="54" type="method" name="attributes" visibility="private" complexity="2" crap="2" count="8"/>
+      <line num="56" type="stmt" count="8"/>
+      <line num="57" type="stmt" count="1"/>
+      <line num="58" type="stmt" count="1"/>
+      <line num="59" type="stmt" count="1"/>
+      <line num="60" type="stmt" count="1"/>
+      <line num="61" type="stmt" count="1"/>
+      <line num="63" type="stmt" count="8"/>
       <line num="64" type="stmt" count="1"/>
-      <line num="66" type="stmt" count="5"/>
-      <line num="67" type="stmt" count="0"/>
-      <line num="69" type="stmt" count="5"/>
-      <line num="70" type="stmt" count="0"/>
-      <line num="72" type="stmt" count="5"/>
-      <line num="73" type="stmt" count="0"/>
-      <line num="75" type="stmt" count="5"/>
-      <line num="76" type="stmt" count="0"/>
-      <line num="80" type="method" name="functions" visibility="private" complexity="1" crap="1" count="5"/>
-      <line num="82" type="stmt" count="5"/>
+      <line num="66" type="stmt" count="8"/>
+      <line num="67" type="stmt" count="1"/>
+      <line num="69" type="stmt" count="8"/>
+      <line num="70" type="stmt" count="1"/>
+      <line num="72" type="stmt" count="8"/>
+      <line num="73" type="stmt" count="1"/>
+      <line num="75" type="stmt" count="8"/>
+      <line num="76" type="stmt" count="1"/>
+      <line num="80" type="method" name="functions" visibility="private" complexity="1" crap="1" count="8"/>
+      <line num="82" type="stmt" count="8"/>
       <line num="83" type="stmt" count="1"/>
-      <line num="87" type="method" name="setTranslations" visibility="public" complexity="3" crap="3" count="5"/>
-      <line num="89" type="stmt" count="5"/>
-      <line num="90" type="stmt" count="5"/>
-      <line num="91" type="stmt" count="5"/>
-      <line num="92" type="stmt" count="5"/>
-      <line num="93" type="stmt" count="5"/>
-      <line num="96" type="stmt" count="5"/>
+      <line num="87" type="method" name="setTranslations" visibility="public" complexity="3" crap="3" count="8"/>
+      <line num="89" type="stmt" count="8"/>
+      <line num="90" type="stmt" count="8"/>
+      <line num="91" type="stmt" count="8"/>
+      <line num="92" type="stmt" count="8"/>
+      <line num="93" type="stmt" count="8"/>
+      <line num="96" type="stmt" count="8"/>
       <line num="99" type="method" name="translate" visibility="public" complexity="2" crap="2" count="1"/>
       <line num="101" type="stmt" count="1"/>
       <line num="102" type="stmt" count="1"/>
@@ -140,12 +143,12 @@
       <line num="124" type="stmt" count="1"/>
       <line num="125" type="stmt" count="1"/>
       <line num="127" type="stmt" count="1"/>
-      <metrics loc="129" ncloc="127" classes="1" methods="9" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="50" elements="68" coveredelements="58"/>
+      <metrics loc="129" ncloc="127" classes="1" methods="9" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="59" elements="68" coveredelements="68"/>
     </file>
     <file name="C:\xampp\htdocs\php-i18n-translate\src\currencies.php">
-      <line num="3" type="stmt" count="12"/>
+      <line num="3" type="stmt" count="15"/>
       <metrics loc="255" ncloc="255" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="1" coveredelements="1"/>
     </file>
-    <metrics files="3" loc="492" ncloc="490" classes="2" methods="14" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="116" coveredstatements="106" elements="130" coveredelements="118"/>
+    <metrics files="3" loc="498" ncloc="496" classes="2" methods="16" coveredmethods="15" conditionals="0" coveredconditionals="0" statements="117" coveredstatements="116" elements="133" coveredelements="131"/>
   </project>
 </coverage>

@@ -24,40 +24,40 @@ class Formatter
         $this->country = substr($this->locale,3);
         $this->hasIntl = class_exists($mockIntlDateFormatter ?? IntlDateFormatter::class);
     }
-
-    public function format(string $what = 'number'): Closure
+    private function formatWithIntl(string $what): Closure
     {
-        if ($this->hasIntl) {
-            switch ($what) {
-                case 'number':
-                    $fmt = new NumberFormatter($this->locale, NumberFormatter::DECIMAL);
-                    return fn(float|int $value) => $fmt->format($value);
-                case 'currency':
-                    $fmt = new NumberFormatter($this->locale, NumberFormatter::CURRENCY);
-                    return function (float|int $amount, string $currency = null) use ($fmt) {
-                        $country = substr($this->locale, 3);
-                        return $fmt->formatCurrency($amount, $currency ?? $this->currencies[$country][0]);
-                    };
-                case 'date':
-                case 'date-local':
-                    $fmt = $this->initFormatter($what === 'date-local' ? $this->getClientTimezone():null);
-                    return function(int $time, string $pattern = null) use($fmt)
-                    {
-                        $fmt->setPattern($pattern ?? $this->getDefaults('date'));
-                        return $fmt->format($time);
-                    };
-                case 'time':
-                case 'time-local':
-                    $fmt = $this->initFormatter($what === 'time-local' ? $this->getClientTimezone(): null);
-                    return function(int $time, string $pattern = null) use($fmt)
-                    {
-                        $fmt->setPattern($pattern ?? $this->getDefaults('time'));
-                        return $fmt->format($time);
-                    };
-
-            }
+        switch ($what) {
+            case 'number':
+                $fmt = new NumberFormatter($this->locale, NumberFormatter::DECIMAL);
+                return fn(float|int $value) => $fmt->format($value);
+            case 'currency':
+                $fmt = new NumberFormatter($this->locale, NumberFormatter::CURRENCY);
+                return function (float|int $amount, string $currency = null) use ($fmt) {
+                    $country = substr($this->locale, 3);
+                    return $fmt->formatCurrency($amount, $currency ?? $this->currencies[$country][0]);
+                };
+            case 'date':
+            case 'date-local':
+                $fmt = $this->initFormatter($what === 'date-local' ? $this->getClientTimezone():null);
+                return function(int $time, string $pattern = null) use($fmt)
+                {
+                    $fmt->setPattern($pattern ?? $this->getDefaults('date'));
+                    return $fmt->format($time);
+                };
+            case 'time':
+            case 'time-local':
+                $fmt = $this->initFormatter($what === 'time-local' ? $this->getClientTimezone(): null);
+                return function(int $time, string $pattern = null) use($fmt)
+                {
+                    $fmt->setPattern($pattern ?? $this->getDefaults('time'));
+                    return $fmt->format($time);
+                };
 
         }
+    }
+
+    private function formatFallback(string $what): Closure
+    {
         return function(float|int $input, $format = null) use($what) {
             switch ($what) {
                 case 'number':
@@ -72,10 +72,16 @@ class Formatter
                 case 'time-local':
                     $pattern = str_replace(['mm'],['i'], $format ?? $this->getDefaults('time'));
                     return date($pattern, $input);
+                default:
+                    return $input;
             }
 
         };
+    }
 
+    public function format(string $what = 'number'): Closure
+    {
+        return $this->hasIntl ? $this->formatWithIntl($what) : $this->formatFallback($what);
     }
     private function initFormatter(string $timezone = null): IntlDateFormatter
     {
@@ -101,7 +107,7 @@ class Formatter
         };
         $array['time'] = match ($this->country) {
             'US' => 'hh:mm A z',
-            default => 'H:mm'
+            default => 'HH:mm'
         };
         return $array[$which];
     }

@@ -4,7 +4,9 @@
 
 [![Build](https://github.com/sroehrl/php-i18n-translate/actions/workflows/php.yml/badge.svg)](https://github.com/sroehrl/php-i18n-translate/actions/workflows/php.yml)
 [![Coverage](https://raw.githubusercontent.com/sroehrl/php-i18n-translate/badges/.github/badges/test-badge.svg)](https://github.com/sroehrl/php-i18n-translate/actions/workflows/php.yml)
-
+[![php](https://img.shields.io/static/v1?label=PHP&message=With%20Love&color=777BB4&logo=php)](https://php.net)
+[![vegan](https://img.shields.io/static/v1?label=100%&message=vegan&color=47a244&logo=mongodb)](https://www.whyveganism.com/)
+[![Maintainability](https://api.codeclimate.com/v1/badges/5b650de720eb802a84a9/maintainability)](https://codeclimate.com/github/sroehrl/php-i18n-translate/maintainability)
 
 ## Installation
 

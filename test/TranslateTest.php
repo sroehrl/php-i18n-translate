@@ -66,6 +66,7 @@ class TranslateTest extends TestCase
     }
 
 
+
     private function setTranslations(Translate $instance)
     {
         $instance->setTranslations('de', $this->translations['de']);

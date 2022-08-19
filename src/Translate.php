@@ -8,13 +8,13 @@ use Neoan3\Apps\Template\Template;
 class Translate
 {
     private array $translations = [];
-    private array $formats;
+    public Formatter $formatter;
     private bool $debug = false;
 
     private string $locale = 'en-US';
     private string $lang = 'en';
 
-    public function __construct(string $locale = null)
+    public function __construct(string $locale = null, string $clientTimezone = null)
     {
         if (!$locale && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             $locale = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
@@ -23,7 +23,7 @@ class Translate
             0 => $this->lang
         ] = explode('-', $locale);
         $this->locale = $locale;
-        $this->formats = $this->getFormats();
+        $this->formatter = new Formatter($locale, $clientTimezone);
         $this->attributes();
         $this->functions();
     }
@@ -32,28 +32,16 @@ class Translate
         $this->debug = $bool;
     }
 
-    private function getFormats(): array
-    {
-        $country = mb_substr($this->locale, 3);
-        $dateFormat = match ($country) {
-            'US' => 'm/d/Y',
-            default => 'd.m.Y'
-        };
-        $timeFormat = match ($country) {
-            'US' => 'h:i A',
-            default => 'H:i'
-        };
-        $fmt = new \NumberFormatter($this->locale, \NumberFormatter::CURRENCY);
-        return [
-            'date' => $dateFormat,
-            'time' => $timeFormat,
-            'currency' => fn(float $number, $currency = "USD") => $fmt->formatCurrency($number, $currency)
-        ];
-
-    }
 
     private function attributes(): void
     {
+        Constants::addCustomAttribute('i18n-currency', function(\DOMAttr $attr, array $contextData) {
+            $currency = $this->formatter->format('currency');
+            $currencyCode = empty($attr->nodeValue) ? null : $attr->nodeValue;
+            $existing = trim(Template::embrace($attr->parentNode->nodeValue, $contextData));
+            $attr->parentNode->nodeValue = $currency((float)$existing, $currencyCode);
+            $attr->parentNode->removeChild($attr);
+        });
         Constants::addCustomAttribute('i18n-date', function (\DOMAttr $attr, array $contextData) {
 
             // get wanted time

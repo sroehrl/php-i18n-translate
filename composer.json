@@ -1,5 +1,6 @@
 {
     "name": "sroehrl/php-i18n-translate",
+    "description": "Simple yet powerful i18n support for PHP projects",
     "license": "MIT",
     "require": {
         "neoan3-apps/template": "^2.0",
@@ -19,7 +20,7 @@
         }
     },
     "scripts": {
-        "test": ["phpunit --configuration phpunit.xml --teamcity","php -f tests/get-coverage.php -- 80 verbose"],
-        "current-coverage": "php -f tests/get-coverage.php -- 80"
+        "test": ["phpunit --configuration phpunit.xml --teamcity","php -f test/get-coverage.php -- 80 verbose"],
+        "current-coverage": "php -f test/get-coverage.php -- 80"
     }
 }

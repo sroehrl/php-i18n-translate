@@ -56,4 +56,16 @@ class FormatterTest extends TestCase
         $call = $formatter2->format('currency');
         $this->assertSame("$12.13", $call(12.13));
     }
+    function testFallbackDefaults()
+    {
+        $f = new Formatter('de-DE', 'America/New_York', 'NotExistingClass');
+        $number = $f->format('number');
+        $this->assertSame('12,30', $number(12.3));
+        $currency = $f->format('currency');
+        $this->assertSame('€12,09', $currency(12.09));
+        $date = $f->format('date');
+        $this->assertSame(date('d.m.Y'), $date(time()));
+        $time = $f->format('time');
+        $this->assertSame(date('H:i'), $time(time()));
+    }
 }

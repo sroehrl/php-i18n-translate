@@ -198,3 +198,7 @@ Example-output:
     <p>2 Frauen</p>
 </div>
 ```
+
+## CONTRIBUTION
+
+[rules](/contributing.md)

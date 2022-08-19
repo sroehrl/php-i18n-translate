@@ -23,7 +23,7 @@ class Translate
             0 => $this->lang
         ] = explode('-', $locale);
         $this->locale = $locale;
-        $this->formats = $this->getDateFormat();
+        $this->formats = $this->getFormats();
         $this->attributes();
         $this->functions();
     }
@@ -32,7 +32,7 @@ class Translate
         $this->debug = $bool;
     }
 
-    private function getDateFormat(): array
+    private function getFormats(): array
     {
         $country = mb_substr($this->locale, 3);
         $dateFormat = match ($country) {
@@ -43,9 +43,11 @@ class Translate
             'US' => 'h:i A',
             default => 'H:i'
         };
+        $fmt = new \NumberFormatter($this->locale, \NumberFormatter::CURRENCY);
         return [
             'date' => $dateFormat,
-            'time' => $timeFormat
+            'time' => $timeFormat,
+            'currency' => fn(float $number, $currency = "USD") => $fmt->formatCurrency($number, $currency)
         ];
 
     }
@@ -109,6 +111,10 @@ class Translate
         $additional = trim($additional);
         $which = is_numeric($additional) && $additional != 1 ? $original . '.plural' : $original;
         return $this->getTranslation($which);
+    }
+    public function asCurrency(float $number): string
+    {
+
     }
 
     private function getTranslation($key): string|array

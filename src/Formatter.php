@@ -70,7 +70,7 @@ class Formatter
                     return date($pattern, $input);
                 case 'time':
                 case 'time-local':
-                    $pattern = str_replace(['mm'],['i'], $format ?? $this->getDefaults('time'));
+                    $pattern = str_replace(['mm','HH'],['i','H'], $format ?? $this->getDefaults('time'));
                     return date($pattern, $input);
                 default:
                     return $input;

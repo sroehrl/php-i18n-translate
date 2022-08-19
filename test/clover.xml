@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1660941985">
-  <project timestamp="1660941985">
+<coverage generated="1660947691">
+  <project timestamp="1660947691">
     <file name="C:\xampp\htdocs\php-i18n-translate\src\Formatter.php">
       <class name="I18nTranslate\Formatter" namespace="global">
         <metrics complexity="26" methods="7" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="57" coveredstatements="56" elements="64" coveredelements="62"/>
@@ -57,7 +57,7 @@
       <line num="91" type="stmt" count="6"/>
       <line num="93" type="method" name="getClientTimezone" visibility="private" complexity="2" crap="2" count="4"/>
       <line num="95" type="stmt" count="4"/>
-      <line num="96" type="stmt" count="1"/>
+      <line num="96" type="stmt" count="2"/>
       <line num="98" type="stmt" count="3"/>
       <line num="99" type="stmt" count="3"/>
       <line num="101" type="method" name="getDefaults" visibility="private" complexity="1" crap="1" count="7"/>

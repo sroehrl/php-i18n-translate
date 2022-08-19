@@ -21,7 +21,7 @@ class FormatterTest extends TestCase
         ini_set('date.timezone','Europe/Berlin');
         $now = time();
         $this->assertSame(date('d.m.Y H:i',$now ),$call($now,'dd.MM.Y HH:mm'));
-        $formatter = new Formatter('en-US');
+        $formatter = new Formatter('en-US','Europe/Berlin');
         $call = $formatter->format('date-local');
         $this->assertSame(date('m/d/Y',$now ),$call($now));
         ini_set('date.timezone', $existingTimezone);

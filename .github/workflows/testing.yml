@@ -1,0 +1,84 @@
+name: Testing
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: test
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+      - name: Run test suite
+        run: composer run-script test
+  coverage:
+    needs: [ test ]
+    name: coverage
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+      - name: Comment code coverage
+        uses: danhunsaker/clover-reporter-action@v0.2.17-clover
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          clover-file: ./test/clover.xml
+      - name: Store coverage output
+        run: |
+          output=$(composer run-script current-coverage)
+          echo "::set-output name=percent::$output"
+        id: pure-coverage
+      - name: Set color
+        uses: marcdomain/set-variables@v1
+        with:
+          variables: |
+               BADGE_COLOR:  ${{ steps.pure-coverage.outputs.percent }} > 90 ? "green" : "yellow"
+      - uses: actions/checkout@v3
+        with:
+          ref: 'badges'
+      - name: generate current time
+        uses: gerred/current-time@v1.0.0
+        id: current-time
+      - name: amend to history
+        uses: DamianReeves/write-file-action@master
+        with:
+          path: '.github/badges/history'
+          contents: |
+            
+            ${{steps.current-time.outputs.time}}
+          write-mode: append
+      - name: Generate the badge SVG image
+        uses: emibcn/badge-action@v1
+        id: badge
+        with:
+          label: 'Test coverage'
+          status: ${{ steps.pure-coverage.outputs.percent }}%
+          color: ${{ env.BADGE_COLOR }}
+          path: '.github/badges/test-badge.svg'
+      - name: Upload badge as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: badge
+          path: '.github/badges/test-badge.svg'
+          if-no-files-found: error
+      - name: Commit badge
+        env:
+          BADGE: '.github/badges/test-badge.svg'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Add/Update badge"
+      - name: Push badge commit
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: 'badges'

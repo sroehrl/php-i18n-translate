@@ -1,0 +1,27 @@
+{
+    "name": "neoan3-apps/template",
+    "description": "PHP DOMDocument-based minimal template engine",
+    "version": "2.0.2",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Neoan3\\Apps\\Template\\": "./"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Neoan3\\Apps\\Template\\Tests\\": "./tests/"
+        }
+    },
+    "require": {
+        "ext-openssl": "*",
+        "ext-mbstring": "*",
+        "ext-json": "*",
+        "ext-dom": "*",
+        "ext-libxml": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
+

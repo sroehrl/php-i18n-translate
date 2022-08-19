@@ -1,8 +1,9 @@
 # PHP i18n translate
 
 > Straight forward. Convenient. Fast.
-[![Build](https://github.com/sroehrl/php-i18n-translate/actions/workflows/php.yml/badge.svg)](https://github.com/sroehrl/neoan.io-lenkrad-core/actions/workflows/php.yml)
-[![Coverage](https://raw.githubusercontent.com/sroehrl/php-i18n-translate/badges/.github/badges/test-badge.svg)](https://github.com/sroehrl/neoan.io-lenkrad-core/actions/workflows/php.yml)
+
+[![Build](https://github.com/sroehrl/php-i18n-translate/actions/workflows/php.yml/badge.svg)](https://github.com/sroehrl/php-i18n-translate/actions/workflows/php.yml)
+[![Coverage](https://raw.githubusercontent.com/sroehrl/php-i18n-translate/badges/.github/badges/test-badge.svg)](https://github.com/sroehrl/php-i18n-translate/actions/workflows/php.yml)
 
 
 ## Installation

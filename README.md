@@ -175,7 +175,7 @@ $regularRenderData = [
     'fromCode' => $t->('man')
 ];
 
-echo $t->translate(Template::embraceFromFile('/test.html'), $regularRenderData)
+echo $t->translate(Template::embraceFromFile('/test.html', $regularRenderData));
 ```
 test.html
 ```html 

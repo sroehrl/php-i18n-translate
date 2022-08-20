@@ -8,13 +8,13 @@ use Neoan3\Apps\Template\Template;
 class Translate
 {
     private array $translations = [];
-    private array $formats;
+    public Formatter $formatter;
     private bool $debug = false;
 
     private string $locale = 'en-US';
     private string $lang = 'en';
 
-    public function __construct(string $locale = null)
+    public function __construct(string $locale = null, string $clientTimezone = null)
     {
         if (!$locale && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             $locale = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
@@ -23,7 +23,7 @@ class Translate
             0 => $this->lang
         ] = explode('-', $locale);
         $this->locale = $locale;
-        $this->formats = $this->getDateFormat();
+        $this->formatter = new Formatter($locale, $clientTimezone);
         $this->attributes();
         $this->functions();
     }
@@ -31,44 +31,49 @@ class Translate
     {
         $this->debug = $bool;
     }
-
-    private function getDateFormat(): array
+    private function applyDateTimeFormat(\DOMAttr $attr, $contextData, $what): void
     {
-        $country = mb_substr($this->locale, 3);
-        $dateFormat = match ($country) {
-            'US' => 'm/d/Y',
-            default => 'd.m.Y'
+        $dateFormatter = $this->formatter->format($what);
+        // get wanted time
+        $existing = trim(Template::embrace($attr->parentNode->nodeValue, $contextData));
+        $time = match (true) {
+            is_numeric($existing) => $existing,
+            !empty($existing) => strtotime($existing),
+            default => time()
         };
-        $timeFormat = match ($country) {
-            'US' => 'h:i A',
-            default => 'H:i'
-        };
-        return [
-            'date' => $dateFormat,
-            'time' => $timeFormat
-        ];
-
+        // get wanted format
+        if ($attr->nodeValue) {
+            $attr->parentNode->textContent = $dateFormatter($time, $attr->nodeValue);
+        } else {
+            $attr->parentNode->textContent = $dateFormatter($time);
+        }
+        $attr->parentNode->removeChild($attr);
     }
+
 
     private function attributes(): void
     {
-        Constants::addCustomAttribute('i18n-date', function (\DOMAttr $attr, array $contextData) {
-
-            // get wanted time
+        Constants::addCustomAttribute('i18n-currency', function(\DOMAttr $attr, array $contextData) {
+            $currency = $this->formatter->format('currency');
+            $currencyCode = empty($attr->nodeValue) ? null : $attr->nodeValue;
             $existing = trim(Template::embrace($attr->parentNode->nodeValue, $contextData));
-            $time = match (true) {
-                is_numeric($existing) => $existing,
-                !empty($existing) => strtotime($existing),
-                default => time()
-            };
-            // get wanted format
-            if ($attr->nodeValue) {
-                $attr->parentNode->textContent = date($attr->nodeValue, $time);
-            } else {
-                $attr->parentNode->textContent = date($this->formats['date'], $time);
-            }
+            $attr->parentNode->nodeValue = $currency((float)$existing, $currencyCode);
             $attr->parentNode->removeChild($attr);
-
+        });
+        Constants::addCustomAttribute('i18n-date', function (\DOMAttr $attr, array $contextData) {
+            $this->applyDateTimeFormat($attr, $contextData, 'date');
+        });
+        Constants::addCustomAttribute('i18n-date-local', function (\DOMAttr $attr, array $contextData) {
+            $this->applyDateTimeFormat($attr, $contextData, 'date-local');
+        });
+        Constants::addCustomAttribute('i18n-time', function (\DOMAttr $attr, array $contextData) {
+            $this->applyDateTimeFormat($attr, $contextData, 'time');
+        });
+        Constants::addCustomAttribute('i18n-time-local', function (\DOMAttr $attr, array $contextData) {
+            $this->applyDateTimeFormat($attr, $contextData, 'time-local');
+        });
+        Constants::addCustomAttribute('i18n-number', function (\DOMAttr $attr, array $contextData) {
+            $this->applyDateTimeFormat($attr, $contextData, 'number');
         });
     }
 
@@ -110,6 +115,7 @@ class Translate
         $which = is_numeric($additional) && $additional != 1 ? $original . '.plural' : $original;
         return $this->getTranslation($which);
     }
+
 
     private function getTranslation($key): string|array
     {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65e8e32dca029f7f608792f94c5cbf05",
+    "content-hash": "6e4603c6c14a48731b4f1a346e124dfb",
     "packages": [
         {
             "name": "neoan3-apps/template",
@@ -2071,7 +2071,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "ext-dom": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"

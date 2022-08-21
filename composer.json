@@ -4,15 +4,15 @@
     "license": "MIT",
     "require": {
         "ext-mbstring": "*",
-        "ext-dom": "*"
+        "ext-dom": "*",
+        "neoan3-apps/template": "^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "9.5.21"
     },
     "autoload": {
         "psr-4": {
-            "I18nTranslate\\": "src/",
-            "Neoan3\\Apps\\Template\\": "C:\\xampp\\htdocs\\neoan3-template/"
+            "I18nTranslate\\": "src/"
         }
     },
     "autoload-dev": {

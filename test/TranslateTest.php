@@ -12,7 +12,7 @@ class TranslateTest extends TestCase
     private array $translations = [
         'de' => [
             'hi' => 'hallo',
-            'bus' => ['Bus','Busse']
+            'bus' => ['Bus','Busse'],
         ]
     ];
     protected function setUp(): void
@@ -88,10 +88,54 @@ class TranslateTest extends TestCase
     {
         $t = new Translate();
         $this->setTranslations($t);
-        $res = Template::embrace('<p>{{t(bus.plural)}}</p>',[]);
+        $context = [
+            'now' => time()
+        ];
+        $t->setContextData($context);
+        // t-function
+        $res = Template::embrace('<p>{{t(bus.plural)}}</p>',$context);
         $this->assertStringContainsString('Busse', $res);
+        // currency
+        $res = Template::embrace('<p>{{i18n-currency(12)}}</p>',$context);
+        $this->assertStringContainsString('[%currency-value%](%12,00', $res);
+        // number
+        $res = Template::embrace('<p>{{i18n-number(12.5)}}</p>',$context);
+        $this->assertStringContainsString('[%number-value%](%12,5', $res);
+        // date & time
+        foreach(['date','date-local','time','time-local'] as $function){
+            $res = Template::embrace("<p>{{i18n-{$function}(+3 hours)}}</p>",$context);
+            $parts = explode('-',$function);
+            $this->assertStringContainsString('[%' . $parts[0] . '-value%](%', $res);
+        }
+        // evaluate
+        $t->setTranslations('de',[
+            'myFunc' => fn($input) => $input . '!'
+        ]);
+        $res = Template::embrace('<p>{{i18n-evaluate(myFunc, louder)}}</p>',$context);
+        $this->assertStringContainsString('[%myFunc%](% louder!', $res);
     }
 
+    public function testCalculations()
+    {
+        $t = new Translate();
+        $this->setTranslations($t);
+        $basic = "4 + 1 - 3 / 2 * 2 ** 2 % 3"; //1
+        $res = Template::embrace('<p>{{i18n-number('.$basic.')}}</p>',[]);
+        $this->assertStringContainsString('[%number-value%](%1', $res);
+    }
+
+    public function testGetLocale()
+    {
+        $t = new Translate('de-DE','Europe/Berlin');
+        $this->setTranslations($t);
+        $this->assertSame('de-DE', $t->getLocale());
+    }
+    public function testNoTranslations()
+    {
+        $t = new Translate('de-DE','Europe/Berlin');
+        $res = $t->translate("<t>whut</t>",[]);
+        $this->assertSame("<t>whut</t>",$res);
+    }
 
 
     private function setTranslations(Translate $instance)

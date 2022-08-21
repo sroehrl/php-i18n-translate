@@ -13,6 +13,8 @@
 `composer require sroehrl/php-i18n-translate`
 
 ```php 
+require_once 'vendor/autoload.php';
+
 $i18n = new I18nTranslate\Translate();
 
 $i18n->setTranslations('de', [
@@ -101,6 +103,7 @@ Outputs:
 - [Time, Date, Currencies & Numbers](#time-date-currencies--numbers)
 - [Time & Date Formats](#time--date-formats)
 - [Usage with "Template" _**recommended**_](#using-i18ntranslate-with-version-2-of-the-neoan3-appstemplate-engine)
+- [Placeholders & Dynamic values](#placeholders--dynamic-values)
 
 ## Initialization
 
@@ -262,6 +265,37 @@ Example-output:
     <p>2 Frauen</p>
 </div>
 ```
+
+## Placeholders & Dynamic values
+
+Placeholders are written embraced by `[%` ans `%]` (e.g. `[% my-var %]`). They enable dynamic values within a translation.
+
+```php 
+...
+$t->setTranslations('de',[
+    'Today I want to talk about [%subject%]' => 'Heute möchte ich über [%subject%] sprechen'
+])
+$context = [
+    'personOfInterest' => 'Mr. T'
+]
+echo $t->translate(Template::embraceFromFile('/belowHtml.html', $context));
+```
+```html
+<t>Today I want to talk about [%subject%](% Tom Brady %)</t>
+```
+... or when using template values:
+```html
+<t>Today I want to talk about [%subject%](% {{personOfInterest}} %)</t>
+```
+
+### Attributes as functions
+When using the attributes within t-tags as functions, they can be referenced as follows:
+
+- i18n-currency -> [%currency-value%]
+- i18n-time, i18n-time-local -> [%time-value%]
+- i18n-date, i18n-date-local -> [%date-value%]
+- i18n-number -> [%number-value%]
+ 
 
 ## CONTRIBUTION
 

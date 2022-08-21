@@ -49,11 +49,7 @@ class Translate
         $dateFormatter = $this->formatter->format($what);
         // get wanted time
         $existing = trim(Template::embrace($attr->parentNode->nodeValue, $contextData));
-        $time = match (true) {
-            is_numeric($existing) => $existing,
-            !empty($existing) => strtotime($existing),
-            default => time()
-        };
+        $time = $this->identifyDateTime($existing);
         // get wanted format
         if ($attr->nodeValue) {
             $attr->parentNode->textContent = $dateFormatter($time, $attr->nodeValue);
@@ -61,6 +57,14 @@ class Translate
             $attr->parentNode->textContent = $dateFormatter($time);
         }
         $attr->parentNode->removeChild($attr);
+    }
+    private function identifyDateTime(mixed $input): float
+    {
+        return match (true) {
+            is_numeric($input) => $input,
+            !empty($input) => strtotime($input),
+            default => time()
+        };
     }
 
 
@@ -94,14 +98,27 @@ class Translate
     {
         // the order of things matters!
         Constants::addCustomFunction('t', function ($original, $additional = null) {
-            var_dump($original, $additional);
             return $this->t($original, $additional);
         });
         Constants::addCustomFunction('i18n-currency', function($original, $additional = null){
             $currency = $this->formatter->format('currency');
-            $interpreted = $this->globalContextData[trim($original)] ?? trim($original);
-            return '[%currency-value%](%' . $currency((float)$interpreted, trim($additional)) . '%)';
+            $interpreted = $this->arithmeticInterpretation($original);
+            return '[%currency-value%](%' . $currency($interpreted, $additional) . '%)';
         });
+        Constants::addCustomFunction('i18n-number', function ($original){
+            $number = $this->formatter->format('number');
+            $interpreted = $this->arithmeticInterpretation($original);
+            return '[%number-value%](%' . $number($interpreted) . '%)';
+        });
+        foreach(['date','date-local','time','time-local'] as $func){
+            Constants::addCustomFunction('i18n-' .$func, function ($original, $additional = null) use($func){
+                $funcParts = explode('-', $func);
+                $formatter = $this->formatter->format($func);
+                $interpreted = $this->identifyDateTime(trim($original));
+                return '[%'. $funcParts[0] .'-value%](%' . $formatter($interpreted, $additional) . '%)';
+            });
+        }
+
         Constants::addCustomFunction('i18n-evaluate', function($function, $additional = null){
             $result = $this->translations[$this->lang][$function](...explode(',', $additional));
             return "[%$function%](%$result%)";
@@ -115,6 +132,7 @@ class Translate
             if (is_array($translation)) {
                 $simplified[$key] = $translation[0];
                 $simplified[$key . '.plural'] = $translation[1];
+
             }
         }
         $this->translations[$lang] = $simplified;
@@ -153,5 +171,27 @@ class Translate
             return "missing translation: $key";
         }
         return $this->translations[array_keys($this->translations)[0]][$key] ?? str_replace('.plural','',$key);
+    }
+    private function arithmeticInterpretation(string $calcString): float
+    {
+        $finalResult = 0;
+        $previousOperator = '+';
+        $exploreOriginal = explode(' ', trim($calcString));
+        foreach ($exploreOriginal as $i => $part){
+            $interim = $this->globalContextData[trim($part)] ?? trim($part);
+            if(is_numeric($interim)){
+                $finalResult = match($previousOperator){
+                    '+' => $finalResult + $interim,
+                    '-' => $finalResult - $interim,
+                    '/' => $finalResult / $interim,
+                    '*' => $finalResult * $interim,
+                    '**' => $finalResult ** $interim,
+                    '%' => $finalResult % $interim
+                };
+            } else {
+                $previousOperator = $interim;
+            }
+        }
+        return $finalResult;
     }
 }

@@ -13,6 +13,7 @@ class Translate
 
     private string $locale = 'en-US';
     private string $lang = 'en';
+    private array $globalContextData = [];
 
     public function __construct(string $locale = null, string $clientTimezone = null)
     {
@@ -26,6 +27,18 @@ class Translate
         $this->formatter = new Formatter($locale, $clientTimezone);
         $this->attributes();
         $this->functions();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+    public function setContextData(array $contextData = []): void
+    {
+        $this->globalContextData = $contextData;
     }
     public function setDebug(bool $bool): void
     {
@@ -79,8 +92,19 @@ class Translate
 
     private function functions(): void
     {
+        // the order of things matters!
         Constants::addCustomFunction('t', function ($original, $additional = null) {
+            var_dump($original, $additional);
             return $this->t($original, $additional);
+        });
+        Constants::addCustomFunction('i18n-currency', function($original, $additional = null){
+            $currency = $this->formatter->format('currency');
+            $interpreted = $this->globalContextData[trim($original)] ?? trim($original);
+            return '[%currency-value%](%' . $currency((float)$interpreted, trim($additional)) . '%)';
+        });
+        Constants::addCustomFunction('i18n-evaluate', function($function, $additional = null){
+            $result = $this->translations[$this->lang][$function](...explode(',', $additional));
+            return "[%$function%](%$result%)";
         });
     }
 
@@ -102,9 +126,13 @@ class Translate
         Constants::setDelimiter('<t>', '<\/t>');
         $context = $this->translations[$this->lang] ?? null;
         if(!$context){
+            if(empty(array_keys($this->translations))){
+                $this->translations['en-US'] = [];
+            }
             $context = $this->translations[array_keys($this->translations)[0]] ?? [];
         }
         $output = Template::embrace($html, $context);
+
         Constants::setDelimiter(...$originalDelimiter);
         return $output;
     }

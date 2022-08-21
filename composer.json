@@ -3,7 +3,6 @@
     "description": "Simple yet powerful i18n support for PHP projects",
     "license": "MIT",
     "require": {
-        "neoan3-apps/template": "^2.0",
         "ext-mbstring": "*",
         "ext-dom": "*"
     },
@@ -12,7 +11,8 @@
     },
     "autoload": {
         "psr-4": {
-            "I18nTranslate\\": "src/"
+            "I18nTranslate\\": "src/",
+            "Neoan3\\Apps\\Template\\": "C:\\xampp\\htdocs\\neoan3-template/"
         }
     },
     "autoload-dev": {
@@ -24,4 +24,5 @@
         "test": ["phpunit --configuration phpunit.xml --teamcity","php -f test/get-coverage.php -- 80 verbose"],
         "current-coverage": "php -f test/get-coverage.php -- 80"
     }
+
 }

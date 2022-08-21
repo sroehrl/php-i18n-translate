@@ -220,7 +220,7 @@ run **PRIOR** to translations, making dynamic formats and values possible:
 ```php 
 use I18nTranslate\Translate;
 use Neoan3\Apps\Template\Constants;
-use Neoan3\Apps\Template\template;
+use Neoan3\Apps\Template\Template;
 ...
 // your template path
 Constants::setPath(__DIR__ . '/view');

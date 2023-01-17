@@ -49,6 +49,10 @@ class Translate
         $dateFormatter = $this->formatter->format($what);
         // get wanted time
         $existing = trim(Template::embrace($attr->parentNode->nodeValue, $contextData));
+        // guard (loops might not have context data yet)
+        if(preg_match('/{{[^}]+}}/', $existing)){
+            return;
+        }
         $time = $this->identifyDateTime($existing);
         // get wanted format
         if ($attr->nodeValue) {
